@@ -1,4 +1,11 @@
-import { Link, redirect, useCatch, useLoaderData, useParams } from "remix";
+import {
+  Form,
+  Link,
+  redirect,
+  useCatch,
+  useLoaderData,
+  useParams,
+} from "remix";
 import type { ActionFunction, LoaderFunction, MetaFunction } from "remix";
 import { Joke } from "@prisma/client";
 import { db } from "~/utils/db.server";
@@ -62,12 +69,12 @@ export default function JokeRoute() {
       <p>{data.joke.content}</p>
       <Link to=".">"{data.joke.name}" Permalink</Link>
       {data.isOwner && (
-        <form method="post">
+        <Form method="post">
           <input type="hidden" name="_method" value="delete" />
           <button type="submit" className="button">
             Delete
           </button>
-        </form>
+        </Form>
       )}
     </div>
   );
@@ -98,8 +105,10 @@ export function CatchBoundary() {
   }
 }
 
-export function ErrorBoundary() {
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
   let { jokeId } = useParams();
+
   return (
     <div className="error-container">
       There was an error loading joke by the id ${jokeId}. Sorry.

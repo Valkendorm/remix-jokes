@@ -1,4 +1,4 @@
-import { Links, LiveReload, Meta, Outlet, useCatch } from "remix";
+import { Links, LiveReload, Meta, Outlet, Scripts, useCatch } from "remix";
 import type { LinksFunction, MetaFunction } from "remix";
 import globalStylesUrl from "~/styles/global.css";
 import globalMediumStylesUrl from "~/styles/global-medium.css";
@@ -58,6 +58,8 @@ function Document({
       </head>
       <body>
         {children}
+        {/* Browser reports: "Warning: Did not expect server HTML to contain a <script> in <html>." */}
+        <Scripts />
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
@@ -89,6 +91,8 @@ export function CatchBoundary() {
 
 // Server Errors reporting
 export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+
   return (
     <Document title="Uh-oh!">
       <div className="error-container">
