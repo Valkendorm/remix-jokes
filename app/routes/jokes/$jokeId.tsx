@@ -1,5 +1,5 @@
 import { Link, redirect, useCatch, useLoaderData, useParams } from "remix";
-import type { ActionFunction, LoaderFunction } from "remix";
+import type { ActionFunction, LoaderFunction, MetaFunction } from "remix";
 import { Joke } from "@prisma/client";
 import { db } from "~/utils/db.server";
 import { getUserId, requireUserId } from "~/utils/session.server";
@@ -24,6 +24,24 @@ export let action: ActionFunction = async ({ request, params }) => {
     await db.joke.delete({ where: { id: params.jokeId } });
     return redirect("/jokes");
   }
+};
+
+export let meta: MetaFunction = ({
+  data,
+}: {
+  data: LoaderData | undefined;
+}) => {
+  if (!data) {
+    return {
+      title: "No joke",
+      description: "No joke found",
+    };
+  }
+
+  return {
+    title: `"${data.joke.name}" joke`,
+    description: `Enjoy the "${data.joke.name}" joke and much more`,
+  };
 };
 
 export let loader: LoaderFunction = async ({ params, request }) => {

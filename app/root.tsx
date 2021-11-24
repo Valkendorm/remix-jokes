@@ -1,5 +1,5 @@
-import type { LinksFunction } from "remix";
-import { Links, LiveReload, Outlet, useCatch } from "remix";
+import { Links, LiveReload, Meta, Outlet, useCatch } from "remix";
+import type { LinksFunction, MetaFunction } from "remix";
 import globalStylesUrl from "~/styles/global.css";
 import globalMediumStylesUrl from "~/styles/global-medium.css";
 import globalLargeStylesUrl from "~/styles/global-large.css";
@@ -20,6 +20,20 @@ export let links: LinksFunction = () => {
   ];
 };
 
+export let meta: MetaFunction = () => {
+  let description = `Learn Remix and laugh at the same time!`;
+  return {
+    description,
+    keywords: "Remix,jokes",
+    "twitter:image": "https://remix-jokes.lol/social.png",
+    "twitter:card": "summary_large_image",
+    "twitter:creator": "@remix_run",
+    "twitter:site": "@remix_run",
+    "twitter:title": "Remix Jokes",
+    "twitter:description": description,
+  };
+};
+
 type DocumentProps = {
   children: React.ReactNode;
   title?: string;
@@ -33,6 +47,12 @@ function Document({
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
+        {/* 
+          Somehow, having the <title> element before <Meta> will indeed update the element's value, 
+          but will still display the original value in the browser. However, by inverting the elements
+          order, a 2nd <title> element will be rendered, but the browser will show the correct value. 
+        */}
+        <Meta />
         <title>{title}</title>
         <Links />
       </head>
