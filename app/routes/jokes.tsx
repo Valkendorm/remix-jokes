@@ -65,7 +65,7 @@ export default function JokesRoute() {
                 <ul>
                   {data.jokeListItems.map((joke) => (
                     <li key={joke.id}>
-                      <Link to={`/jokes/${joke.id}`}>{joke.name}</Link>
+                      <Link to={joke.id}>{joke.name}</Link>
                     </li>
                   ))}
                 </ul>
@@ -80,6 +80,13 @@ export default function JokesRoute() {
           </div>
         </div>
       </main>
+      <footer className="jokes-footer">
+        <div className="container">
+          <Link to="/jokes.rss" reloadDocument>
+            RSS
+          </Link>
+        </div>
+      </footer>
     </div>
   );
 }
